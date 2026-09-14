@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CertKraft — Company Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange:   #CC785C;
+    --navy:     #FAF8F5;
+    --navy-mid: #F0EDE8;
+    --emerald:  #5A9E8F;
+    --white:    #1F2937;
+    --muted:    #6B7280;
+    --card-bg:  #FFFFFF;
+    --border:   rgba(31,41,55,0.1);
+    --sand:     #D4A574;
+    --blue:     #4A6FA5;
+    --mauve:    #9B7B8A;
+    --font-head: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --ease:     cubic-bezier(.4,0,.2,1);
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--font-head);
+  }
+
+  /* ── Scroll container ── */
+  #deck {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100vh;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+  }
+  #deck::-webkit-scrollbar { display: none; }
+
+  /* ── Slide base ── */
+  .slide {
+    flex: none;
+    width: 100vw;
+    height: 100vh;
+    scroll-snap-align: start;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 48px 64px;
+    overflow: hidden;
+  }
+
+  /* ── Progress dots ── */
+  #nav-dots {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(31,41,55,0.2);
+    cursor: pointer;
+    transition: background 0.3s var(--ease), width 0.3s var(--ease);
+  }
+  .dot.active {
+    background: var(--orange);
+    width: 20px;
+    border-radius: 3px;
+  }
+
+  /* ── Slide progress indicator ── */
+  #slide-counter {
+    position: fixed;
+    top: 24px;
+    right: 40px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    z-index: 100;
+  }
+
+  /* ══════════════════════════════════
+     SLIDE 1 — INTRO
+  ══════════════════════════════════ */
+  #slide-1 {
+    background: var(--navy);
+    align-items: flex-start;
+  }
+  .intro-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 720px;
+  }
+  .intro-left {}
+  .brand-mark {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--orange);
+    letter-spacing: 0.12em;
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-mark::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 2px;
+    background: var(--orange);
+  }
+  .intro-headline {
+    font-size: clamp(36px, 4vw, 62px);
+    font-weight: 700;
+    line-height: 1.08;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+  .intro-headline .accent { color: var(--orange); }
+  .intro-sub {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 480px;
+    margin-bottom: 48px;
+  }
+  .btn-next {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--orange);
+    color: #fff;
+    font-family: var(--font-head);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 28px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+  }
+  .btn-next:hover { background: #b5624a; transform: translateX(3px); }
+  .btn-next svg { transition: transform 0.2s var(--ease); }
+  .btn-next:hover svg { transform: translateX(4px); }
+
+  .intro-right {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    align-items: start;
+  }
+  .illus-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .illus-panel::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s var(--ease);
+  }
+  .illus-panel:hover::after { transform: scaleX(1); }
+  .illus-svg {
+    width: 100%;
+    height: 110px;
+    margin-bottom: 16px;
+  }
+  .illus-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+  .illus-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* terminal prompt in brand mark */
+  .terminal-tag {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--orange);
+    background: rgba(204,120,92,0.1);
+    border: 1px solid rgba(204,120,92,0.3);
+    padding: 4px 14px;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+
+  /* ══════════════════════════════════
+     SLIDE 2 — FEATURES MENU
+  ══════════════════════════════════ */
+  #slide-2 {
+    background: var(--navy);
+    align-items: center;
+    justify-content: center;
+    padding: 0 80px;
+  }
+
+  /* ── Bento grid ── */
+  #slide-2 {
+    background: var(--navy);
+    align-items: center;
+    justify-content: center;
+    padding: 40px 60px;
+  }
+  .bento-wrap {
+    width: 100%;
+    max-width: 1160px;
+  }
+  .bento-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 160px);
+    gap: 12px;
+    width: 100%;
+  }
+  .bento-cell {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 8px rgba(31,41,55,0.06);
+  }
+  .bento-cell:hover {
+    border-color: rgba(204,120,92,0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(31,41,55,0.1);
+  }
+  .bento-cell:hover .bc-arrow { opacity: 1; }
+  /* Spanning cells */
+  .bento-cell.wide  { grid-column: span 2; }
+  .bento-cell.tall  { grid-row: span 2; }
+
+  /* Accent glow in corner */
+  .bento-cell::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .bento-cell:hover::before { opacity: 1; }
+  .bento-cell.c-orange::before { background: radial-gradient(circle, rgba(204,120,92,0.15) 0%, transparent 70%); }
+  .bento-cell.c-green::before  { background: radial-gradient(circle, rgba(90,158,143,0.12) 0%, transparent 70%); }
+  .bento-cell.c-blue::before   { background: radial-gradient(circle, rgba(74,111,165,0.12) 0%, transparent 70%); }
+
+  .bc-icon {
+    font-size: 26px;
+    line-height: 1;
+  }
+  .bc-bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; }
+  .bc-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.3;
+  }
+  .bc-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.45;
+    margin-top: 4px;
+  }
+  .bc-arrow {
+    font-size: 18px;
+    color: var(--orange);
+    opacity: 0;
+    flex-shrink: 0;
+    transition: opacity 0.2s;
+    align-self: flex-end;
+  }
+  /* Large cell gets bigger text */
+  .bento-cell.tall .bc-name { font-size: 18px; }
+  .bento-cell.wide .bc-name { font-size: 16px; }
+
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--mauve);
+    letter-spacing: 0.14em;
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3vw, 44px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  .section-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 48px;
+    max-width: 500px;
+    line-height: 1.6;
+  }
+
+
+  /* ══════════════════════════════════
+     SLIDES 3-10 — FEATURE DETAIL
+  ══════════════════════════════════ */
+  .feature-slide {
+    align-items: flex-start;
+    background: var(--navy);
+  }
+  .back-btn {
+    position: absolute;
+    top: 28px;
+    left: 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+;
+    background: none;
+    border: none;
+    font-family: var(--font-head);
+    transition: color 0.2s;
+  }
+  .back-btn:hover { color: var(--orange); }
+  .feature-detail-wrap {
+    width: 100%;
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .fd-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--orange);
+    letter-spacing: 0.14em;
+    margin-bottom: 16px;
+  }
+  .fd-title {
+    font-size: clamp(28px, 3vw, 48px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+  .fd-body {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 32px;
+    max-width: 440px;
+  }
+  .fd-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .fd-points li {
+    border-left: 3px solid var(--orange);
+    padding: 10px 14px;
+    background: rgba(204,120,92,0.05);
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    color: var(--white);
+    line-height: 1.5;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .fd-points li:hover {
+    background: rgba(204,120,92,0.1);
+    border-color: var(--orange);
+  }
+  .fd-visual {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px;
+    height: 100%;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(31,41,55,0.08);
+  }
+  .fd-visual::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(204,120,92,0.06);
+    pointer-events: none;
+  }
+  .fd-visual-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--emerald);
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+  }
+
+  /* Mini UI mockup items */
+  .mock-item {
+    background: rgba(31,41,55,0.04);
+    border: 1px solid rgba(31,41,55,0.1);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--white);
+  }
+  .mock-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .mock-bar {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--orange);
+    flex: 1;
+    max-width: 200px;
+  }
+  .mock-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: rgba(90,158,143,0.12);
+    color: var(--emerald);
+    margin-left: auto;
+  }
+
+  /* ══════════════════════════════════
+     VISUAL BOOKS SLIDE
+  ══════════════════════════════════ */
+  #slide-books {
+    background: linear-gradient(135deg, #0A1628 0%, #0D1F3C 60%, #0D1F3C 100%);
+    align-items: flex-start;
+  }
+  .books-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    width: 100%;
+    max-width: 1200px;
+    align-items: center;
+  }
+  .books-shelf {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+  }
+  .book-spine {
+    flex: 1;
+    border-radius: 6px 2px 2px 6px;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+  }
+  .book-spine::after {
+    content: attr(data-title);
+    position: absolute;
+    bottom: 24px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    font-family: var(--font-head);
+  }
+  .book-spine-1 { height: 280px; background: linear-gradient(180deg, #F97316, #e05e00); }
+  .book-spine-2 { height: 240px; background: linear-gradient(180deg, #10B981, #0d9a6a); }
+  .book-spine-3 { height: 260px; background: linear-gradient(180deg, #4A6FA5, #0d3d7a); }
+  .book-spine-4 { height: 220px; background: linear-gradient(180deg, #6a1fa8, #3d0d6e); }
+  .book-spine-5 { height: 250px; background: linear-gradient(180deg, #c62828, #8a0000); }
+
+  .books-info .section-eyebrow { color: var(--orange); }
+  .books-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(90,158,143,0.1);
+    border: 1px solid rgba(90,158,143,0.3);
+    color: var(--emerald);
+    font-size: 12px;
+    font-family: var(--font-mono);
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+  }
+  .books-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 28px;
+  }
+  .books-list li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 14px;
+    color: var(--white);
+    padding: 14px 18px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .bl-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ══════════════════════════════════
+     FINAL SLIDE — CTA
+  ══════════════════════════════════ */
+  #slide-final {
+    background: var(--navy);
+    text-align: center;
+    align-items: center;
+  }
+  .final-logo {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    color: var(--orange);
+    margin-bottom: 32px;
+    letter-spacing: 0.05em;
+  }
+  .final-headline {
+    font-size: clamp(32px, 4vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    max-width: 640px;
+    margin: 0 auto 24px;
+  }
+  .final-sub {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 440px;
+    margin: 0 auto 48px;
+    line-height: 1.65;
+  }
+  .final-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-primary {
+    background: var(--orange);
+    color: #fff;
+    font-family: var(--font-head);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #b5624a; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    font-family: var(--font-head);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 13px 28px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.3); }
+
+  .kira-strip {
+    margin-top: 60px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    background: rgba(90,158,143,0.08);
+    border: 1px solid rgba(90,158,143,0.2);
+    border-radius: 8px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .kira-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10B981, #0d9a6a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .kira-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .kira-text strong { color: var(--emerald); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .slide { padding: 32px 28px; }
+    .intro-grid, .feature-detail-wrap, .books-layout { grid-template-columns: 1fr; gap: 32px; }
+    .intro-right, .fd-visual, .books-shelf { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+    #deck { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div id="deck">
+
+  <!-- ─────────────────────────── SLIDE 1: INTRO ─────────────────────────── -->
+  <section class="slide" id="slide-1">
+    <div class="intro-grid">
+      <div class="intro-left">
+        <img src="data:image/png;base64,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" style="height:52px;width:auto;display:block;margin-bottom:32px;image-rendering:-webkit-optimize-contrast;" alt="CertKraft">
+        <div class="brand-mark" style="display:none">CERTKRAFT</div>
+        <h1 class="intro-headline">
+          IT Certification<br>Training, <span class="accent">Reimagined</span><br>for India.
+        </h1>
+        <p class="intro-sub">
+          An AI-powered learning platform built for working professionals and students preparing for Cloud Computing, Networking, AI, and Cybersecurity certifications — with real labs, adaptive assessments, and a mentor that actually knows your gaps.
+        </p>
+        <button class="btn-next" onclick="scrollToSlide(1)">
+          Explore what we offer
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── SLIDE 2: FEATURES ─────────────────────────── -->
+  <section class="slide" id="slide-2">
+    <div class="bento-wrap">
+      <div class="bento-header">
+        <div>
+          <p class="section-eyebrow">PLATFORM FEATURES</p>
+          <h2 class="section-title" style="margin-bottom:0">What CertKraft gives you.</h2>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">Click any feature to explore</div>
+      </div>
+
+      <div class="bento-grid">
+
+        <!-- 01 — Learning Paths · wide -->
+        <div class="bento-cell wide c-orange" onclick="scrollToSlide(2)">
+          <div class="bc-icon">🗺️</div>
+          <div class="bc-bottom">
+            <div>
+              <div class="bc-name">Structured Learning Paths</div>
+              <div class="bc-desc">Path → Skill → Course → Lesson → Unit</div>
+            </div>
+            <span class="bc-arrow">→</span>
+          </div>
+        </div>
+
+        <!-- 02 — Labs · normal -->
+        <div class="bento-cell c-green" onclick="scrollToSlide(3)">
+          <div class="bc-icon">🖥️</div>
+          <div class="bc-bottom">
+            <div>
+              <div class="bc-name">Browser-Based Lab Terminal</div>
+              <div class="bc-desc">Live terminal, zero setup</div>
+            </div>
+            <span class="bc-arrow">→</span>
+          </div>
+        </div>
+
+        <!-- 03 — Assessments · normal -->
+        <div class="bento-cell c-orange" onclick="scrollToSlide(4)">
+          <div class="bc-icon">📋</div>
+          <div class="bc-bottom">
+            <div>
+              <div class="bc-name">Exam-Blueprint Assessments</div>
+              <div class="bc-desc">Competency-weighted scoring</div>
+            </div>
+            <span class="bc-arrow">→</span>
+          </div>
+        </div>
+
+        <!-- 04 — KIRA · tall -->
+        <div class="bento-cell tall c-green" onclick="scrollToSlide(8)">
+          <div class="bc-icon">🧠</div>
+          <div class="bc-bottom">
+            <div>
+              <div class="bc-name">KIRA — AI Learning Companion</div>
+              <div class="bc-desc">Gap analysis, adaptive suggestions &amp; on-demand Q&A</div>
+            </div>
+            <span class="bc-arrow">→</span>
+          </div>
+        </div>
+
+        <!-- 05 — Flashcards · normal -->
+        <div class="bento-cell c-blue" onclick="scrollToSlide(5)">
+          <div class="bc-icon">🃏</div>
+          <div class="bc-bottom">
+            <div>
+              <div class="bc-name">Spaced-Repetition Flashcards</div>
+              <div class="bc-desc">SM-2 memory algorithm</div>
+            </div>
+            <span class="bc-arrow">→</span>
+          </div>
+        </div>
+
+        <!-- 06 — Visual Books · normal -->
+        <div class="bento-cell c-orange" onclick="scrollToSlide(7)">
+          <div class="bc-icon">📚</div>
+          <div class="bc-bottom">
+            <div>
+              <div class="bc-name">Visual Study Books</div>
+              <div class="bc-desc">CertKraft Press — illustrated guides</div>
+            </div>
+            <span class="bc-arrow">→</span>
+          </div>
+        </div>
+
+        <!-- 07 — Analytics · normal -->
+        <div class="bento-cell c-green" onclick="scrollToSlide(6)">
+          <div class="bc-icon">📊</div>
+          <div class="bc-bottom">
+            <div>
+              <div class="bc-name">Progress &amp; Analytics</div>
+              <div class="bc-desc">Readiness scores &amp; streaks</div>
+            </div>
+            <span class="bc-arrow">→</span>
+          </div>
+        </div>
+
+        <!-- 08 — Billing · wide -->
+        <div class="bento-cell wide c-blue" onclick="scrollToSlide(9)">
+          <div class="bc-icon">💳</div>
+          <div class="bc-bottom">
+            <div>
+              <div class="bc-name">India-Native Billing</div>
+              <div class="bc-desc">UPI, PhonePe, cards &amp; GST-compliant invoices</div>
+            </div>
+            <span class="bc-arrow">→</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── SLIDE 3: LEARNING PATHS ─────────────────────────── -->
+  <section class="slide feature-slide" id="slide-3">
+    <button class="back-btn" onclick="scrollToSlide(1)">← Back to features</button>
+    <div class="feature-detail-wrap">
+      <div>
+        <p class="fd-label">STRUCTURED LEARNING PATHS</p>
+        <h2 class="fd-title">From first lesson to exam day — a clear road.</h2>
+        <p class="fd-body">Every certification on CertKraft follows a structured hierarchy that breaks complex topics into manageable steps. No guesswork about what to study next — the platform guides you from start to certified.</p>
+        <ul class="fd-points">
+          <li>5-level hierarchy: Learning Path → Skill → Course → Lesson → Unit</li>
+          <li>Exam-domain aligned content sequencing</li>
+          <li>Progress checkpoints before advancing</li>
+          <li>Filter by certification: AWS, Azure, CompTIA, Cisco</li>
+        </ul>
+      </div>
+      <div class="fd-visual">
+        <div class="fd-visual-label">LEARNING PATH — AWS CLOUD PRACTITIONER</div>
+        <div>
+          <div class="mock-item" style="border-left:3px solid var(--emerald)">
+            ✅ Skill 1: Cloud Fundamentals
+            <span class="mock-badge">Complete</span>
+          </div>
+          <div class="mock-item" style="border-left:3px solid var(--orange)">
+            ▶ Skill 2: Core AWS Services
+            <span class="mock-badge" style="background:rgba(204,120,92,.15);color:var(--orange)">In Progress</span>
+          </div>
+          <div class="mock-item" style="opacity:0.5">
+            ◯ Skill 3: Security &amp; Compliance
+            <span class="mock-badge" style="background:rgba(31,41,55,0.07);color:var(--muted)">Locked</span>
+          </div>
+          <div class="mock-item" style="opacity:0.5">
+            ◯ Skill 4: Billing &amp; Pricing
+            <span class="mock-badge" style="background:rgba(31,41,55,0.07);color:var(--muted)">Locked</span>
+          </div>
+          <div style="margin-top:14px;font-size:12px;color:var(--muted)">
+            Overall: <span style="color:var(--orange)">38% complete</span> · Est. time remaining: 14h
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── SLIDE 4: LABS ─────────────────────────── -->
+  <section class="slide feature-slide" id="slide-4">
+    <button class="back-btn" onclick="scrollToSlide(1)">← Back to features</button>
+    <div class="feature-detail-wrap">
+      <div>
+        <p class="fd-label">BROWSER-BASED LABS</p>
+        <h2 class="fd-title">Real commands. Zero setup. In your browser.</h2>
+        <p class="fd-body">Most courses make you learn commands by reading about them. CertKraft puts a live SSH terminal right inside the lesson — so you run it, break it, and fix it yourself. Included in all base plans.</p>
+        <ul class="fd-points">
+          <li>Live terminal embedded in the lesson player</li>
+          <li>Pre-configured lab environments — no VM installation</li>
+          <li>Guided lab tasks with step-by-step verification</li>
+          <li>Covers Linux, networking, cloud CLI, and security tools</li>
+        </ul>
+      </div>
+      <div class="fd-visual">
+        <div class="fd-visual-label">TERMINAL — LIVE LAB SESSION</div>
+        <div style="background:#1F2937;border-radius:6px;padding:20px;font-family:var(--font-mono);font-size:13px;line-height:1.8;flex:1;">
+          <span style="color:#4ade80">learner@certkraft-lab</span><span style="color:var(--muted)">:~$</span> <span style="color:#aec6e8">ping 192.168.1.1</span><br>
+          <span style="color:var(--muted)">PING 192.168.1.1 56 bytes of data.</span><br>
+          <span style="color:var(--emerald)">64 bytes from 192.168.1.1: icmp_seq=1 ttl=64</span><br>
+          <span style="color:var(--emerald)">64 bytes from 192.168.1.1: icmp_seq=2 ttl=64</span><br>
+          <span style="color:var(--muted)">--- ping statistics ---</span><br>
+          <span style="color:#aec6e8">2 packets transmitted, 2 received, 0% loss</span><br><br>
+          <span style="color:#4ade80">learner@certkraft-lab</span><span style="color:var(--muted)">:~$</span> <span style="color:#aec6e8">▌</span>
+        </div>
+        <div style="margin-top:16px;padding:12px 16px;background:rgba(90,158,143,0.08);border-radius:6px;border:1px solid rgba(90,158,143,0.25);font-size:12px;color:var(--emerald)">
+          ✓ Lab task complete — connectivity verified. Move to next task.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── SLIDE 5: ASSESSMENTS ─────────────────────────── -->
+  <section class="slide feature-slide" id="slide-5">
+    <button class="back-btn" onclick="scrollToSlide(1)">← Back to features</button>
+    <div class="feature-detail-wrap">
+      <div>
+        <p class="fd-label">EXAM-BLUEPRINT ASSESSMENTS</p>
+        <h2 class="fd-title">Practice exams that mirror the real thing.</h2>
+        <p class="fd-body">CertKraft's assessment engine maps every question to the official exam blueprint. Scoring is competency-weighted — so you know exactly which domains need more work, not just your overall percentage.</p>
+        <ul class="fd-points">
+          <li>Questions mapped to exam domains and sub-objectives</li>
+          <li>Competency-weighted scoring per blueprint</li>
+          <li>Detailed per-question explanations after each attempt</li>
+          <li>Timed exams to simulate actual test conditions</li>
+          <li>Performance history across all attempts</li>
+          <li>Earn certificates on successful course and path completion</li>
+          <li>Gamified badges, streaks, and leaderboards to keep you motivated</li>
+        </ul>
+      </div>
+      <div class="fd-visual">
+        <div class="fd-visual-label">EXAM RESULTS — DOMAIN BREAKDOWN</div>
+        <div>
+          <div class="mock-item">Domain 1: Networking Fundamentals <span class="mock-badge" style="background:rgba(90,158,143,.15);color:var(--emerald)">91%</span></div>
+          <div class="mock-item">Domain 2: Network Access <span class="mock-badge" style="background:rgba(204,120,92,.15);color:var(--orange)">62%</span></div>
+          <div class="mock-item">Domain 3: IP Connectivity <span class="mock-badge" style="background:rgba(204,120,92,.15);color:var(--orange)">58%</span></div>
+          <div class="mock-item">Domain 4: Security Fundamentals <span class="mock-badge">78%</span></div>
+          <div class="mock-item">Domain 5: Automation &amp; Prog. <span class="mock-badge" style="background:rgba(90,158,143,.15);color:var(--emerald)">85%</span></div>
+          <div style="margin-top:16px;font-size:12px;color:var(--muted);font-family:var(--font-mono)">
+            Overall Readiness Score: <span style="color:var(--orange);font-weight:600">71 / 100</span> — Keep going!
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── SLIDE 6: FLASHCARDS ─────────────────────────── -->
+  <section class="slide feature-slide" id="slide-6">
+    <button class="back-btn" onclick="scrollToSlide(1)">← Back to features</button>
+    <div class="feature-detail-wrap">
+      <div>
+        <p class="fd-label">SPACED-REPETITION FLASHCARDS</p>
+        <h2 class="fd-title">Remember more. Review smarter.</h2>
+        <p class="fd-body">Flashcards powered by the SM-2 algorithm — the same system used by the world's top memory apps. CertKraft schedules each card to reappear just before you'd naturally forget it, making every review session count.</p>
+        <ul class="fd-points">
+          <li>SM-2 spaced repetition scheduling built in</li>
+          <li>Flashcards aligned to course topics and exam domains</li>
+          <li>Quick-review mode for the day before your exam</li>
+          <li>Track retention rate per topic over time</li>
+        </ul>
+      </div>
+      <div class="fd-visual">
+        <div class="fd-visual-label">TODAY'S REVIEW QUEUE</div>
+        <div style="background:rgba(204,120,92,0.05);border:1px solid rgba(204,120,92,0.2);border-radius:8px;padding:28px 24px;text-align:center;margin-bottom:16px;">
+          <div style="font-size:12px;color:var(--muted);font-family:var(--font-mono);margin-bottom:16px">CARD 3 OF 12</div>
+          <div style="font-size:16px;font-weight:600;color:var(--white);line-height:1.5">What does the 'T' in TACACS+ stand for, and what protocol does it use?</div>
+          <div style="margin-top:20px;font-size:12px;color:var(--muted)">Tap to reveal answer</div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <div style="flex:1;padding:10px;text-align:center;border-radius:6px;background:rgba(200,50,50,0.1);border:1px solid rgba(200,50,50,0.2);font-size:12px;color:#e57373">Again</div>
+          <div style="flex:1;padding:10px;text-align:center;border-radius:6px;background:rgba(204,120,92,0.1);border:1px solid rgba(204,120,92,0.25);font-size:12px;color:var(--orange)">Hard</div>
+          <div style="flex:1;padding:10px;text-align:center;border-radius:6px;background:rgba(90,158,143,0.1);border:1px solid rgba(90,158,143,0.25);font-size:12px;color:var(--emerald)">Good</div>
+          <div style="flex:1;padding:10px;text-align:center;border-radius:6px;background:rgba(90,158,143,0.18);border:1px solid rgba(90,158,143,0.3);font-size:12px;color:var(--emerald)">Easy</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── SLIDE 7: ANALYTICS ─────────────────────────── -->
+  <section class="slide feature-slide" id="slide-7">
+    <button class="back-btn" onclick="scrollToSlide(1)">← Back to features</button>
+    <div class="feature-detail-wrap">
+      <div>
+        <p class="fd-label">PROGRESS &amp; ANALYTICS</p>
+        <h2 class="fd-title">Know exactly where you stand — always.</h2>
+        <p class="fd-body">CertKraft gives you a live picture of your readiness, not just a streak count. Track your competency across every domain, see which lessons need revisiting, and get a data-backed answer to "am I ready to book my exam?"</p>
+        <ul class="fd-points">
+          <li>Domain-level competency scores updated after every quiz</li>
+          <li>Lesson completion and time-on-task tracking</li>
+          <li>KIRA readiness score — a single number to guide exam booking</li>
+          <li>Streak and consistency metrics to maintain study habits</li>
+          <li>Accessible on mobile and desktop — study anywhere</li>
+        </ul>
+      </div>
+      <div class="fd-visual">
+        <div class="fd-visual-label">YOUR PROGRESS — WEEK 4</div>
+        <div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+            <div style="padding:16px;background:rgba(31,41,55,0.04);border-radius:6px;border:1px solid var(--border);text-align:center">
+              <div style="font-size:28px;font-weight:700;color:var(--orange)">71</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px">Readiness Score</div>
+            </div>
+            <div style="padding:16px;background:rgba(31,41,55,0.04);border-radius:6px;border:1px solid var(--border);text-align:center">
+              <div style="font-size:28px;font-weight:700;color:var(--emerald)">12</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px">Day Streak</div>
+            </div>
+            <div style="padding:16px;background:rgba(31,41,55,0.04);border-radius:6px;border:1px solid var(--border);text-align:center">
+              <div style="font-size:28px;font-weight:700;color:var(--white)">38</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px">Lessons Done</div>
+            </div>
+            <div style="padding:16px;background:rgba(31,41,55,0.04);border-radius:6px;border:1px solid var(--border);text-align:center">
+              <div style="font-size:28px;font-weight:700;color:var(--white)">22h</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px">Total Study Time</div>
+            </div>
+          </div>
+          <div style="padding:12px 16px;background:rgba(204,120,92,0.08);border-radius:6px;font-size:12px;color:var(--muted)">
+            📈 You're ahead of 68% of learners at the same stage.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── SLIDE 8: VISUAL BOOKS ─────────────────────────── -->
+  <section class="slide" id="slide-8">
+    <button class="back-btn" onclick="scrollToSlide(1)">← Back to features</button>
+    <div class="books-layout">
+      <div class="books-info">
+        <p class="section-eyebrow">CERTKRAFT PRESS</p>
+        <div class="books-tag">📚 Visual Study Books</div>
+        <h2 class="section-title">Learn by seeing,<br>not just reading.</h2>
+        <p class="section-sub" style="color:var(--muted);font-size:15px;line-height:1.65;margin-top:12px">
+          CertKraft Press produces illustrated, print-quality study guides built for visual learners. Diagrams, colour-coded frameworks, and concept maps — not walls of text. Every title is aligned to an exam blueprint and designed to work alongside the platform.
+        </p>
+        <ul class="books-list">
+          <li><span class="bl-dot" style="background:var(--orange)"></span> Full-colour illustrations and concept diagrams</li>
+          <li><span class="bl-dot" style="background:var(--emerald)"></span> Aligned to official certification exam blueprints</li>
+          <li><span class="bl-dot" style="background:#4A6FA5"></span> Domains include: Cloud, Networking &amp; Cybersecurity</li>
+          <li><span class="bl-dot" style="background:#6a1fa8"></span> Available as PDF and print — under CertKraft Press</li>
+        </ul>
+      </div>
+      <div class="books-shelf">
+        <div class="book-spine book-spine-1" data-title="Cloud Practitioner"></div>
+        <div class="book-spine book-spine-2" data-title="Security+"></div>
+        <div class="book-spine book-spine-3" data-title="CCNA"></div>
+        <div class="book-spine book-spine-4" data-title="AI Applied"></div>
+        <div class="book-spine book-spine-5" data-title="SOC Analyst"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── SLIDE 9: KIRA ─────────────────────────── -->
+  <section class="slide feature-slide" id="slide-9">
+    <button class="back-btn" onclick="scrollToSlide(1)">← Back to features</button>
+    <div class="feature-detail-wrap">
+      <div>
+        <p class="fd-label">AI LEARNING COMPANION</p>
+        <h2 class="fd-title">Meet KIRA — your certification mentor.</h2>
+        <p class="fd-body">Knowledge Intelligence and Readiness Assistant. KIRA tracks where you are, identifies your weak areas, and delivers targeted explanations, hints, and encouragement — so you're always working on the right thing at the right time.</p>
+        <ul class="fd-points">
+          <li>On-demand Q&A grounded in your course material</li>
+          <li>Gap analysis based on your quiz and practice results</li>
+          <li>Adaptive study suggestions as you progress</li>
+          <li>Readiness score to tell you when you're exam-ready</li>
+        </ul>
+      </div>
+      <div class="fd-visual">
+        <div class="fd-visual-label">KIRA — READINESS DASHBOARD</div>
+        <div>
+          <div class="mock-item">
+            <span class="mock-dot" style="background:#F97316"></span>
+            Network Fundamentals
+            <div class="mock-bar" style="max-width:160px;background:var(--emerald)"></div>
+            <span class="mock-badge">87%</span>
+          </div>
+          <div class="mock-item">
+            <span class="mock-dot" style="background:#F97316"></span>
+            IP Addressing &amp; Subnetting
+            <div class="mock-bar" style="max-width:100px"></div>
+            <span class="mock-badge" style="background:rgba(204,120,92,.15);color:var(--orange)">54%</span>
+          </div>
+          <div class="mock-item">
+            <span class="mock-dot" style="background:var(--emerald)"></span>
+            Security Fundamentals
+            <div class="mock-bar" style="max-width:140px;background:#4A6FA5"></div>
+            <span class="mock-badge">72%</span>
+          </div>
+          <div class="mock-item" style="background:rgba(90,158,143,0.08);border-color:rgba(90,158,143,0.25)">
+            🧠 <span style="color:var(--emerald)">KIRA says:</span> Focus on subnetting — you're 3 practice sessions away from being exam-ready.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── SLIDE 10: BILLING ─────────────────────────── -->
+  <section class="slide feature-slide" id="slide-10">
+    <button class="back-btn" onclick="scrollToSlide(1)">← Back to features</button>
+    <div class="feature-detail-wrap">
+      <div>
+        <p class="fd-label">INDIA-NATIVE BILLING</p>
+        <h2 class="fd-title">Pay your way — UPI, cards, or subscription.</h2>
+        <p class="fd-body">CertKraft is built from the ground up for Indian learners and Indian compliance. All payment methods Indians actually use — with invoices that your CA will approve and your company will reimburse.</p>
+        <ul class="fd-points">
+          <li>Razorpay — UPI, NetBanking, cards, EMI</li>
+          <li>PhonePe — mass-market India payments</li>
+          <li>Stripe — international cards</li>
+          <li>GST-compliant invoices with SAC codes, CGST/SGST/IGST</li>
+          <li>One-time course purchase or monthly/annual subscriptions</li>
+        </ul>
+      </div>
+      <div class="fd-visual">
+        <div class="fd-visual-label">CHECKOUT — CERTKRAFT PRO</div>
+        <div>
+          <div class="mock-item" style="justify-content:space-between">
+            <span>CertKraft Pro — Annual</span>
+            <span style="color:var(--orange);font-weight:600">₹4,999/yr</span>
+          </div>
+          <div style="padding:16px;border:1px solid var(--border);border-radius:6px;margin-top:10px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Select Payment Method</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <div style="padding:8px 14px;border:1px solid var(--orange);border-radius:4px;font-size:12px;color:var(--orange)">UPI</div>
+              <div style="padding:8px 14px;border:1px solid var(--border);border-radius:4px;font-size:12px;color:var(--muted)">NetBanking</div>
+              <div style="padding:8px 14px;border:1px solid var(--border);border-radius:4px;font-size:12px;color:var(--muted)">Card</div>
+              <div style="padding:8px 14px;border:1px solid var(--border);border-radius:4px;font-size:12px;color:var(--muted)">PhonePe</div>
+            </div>
+          </div>
+          <div style="margin-top:14px;padding:14px 16px;background:rgba(90,158,143,0.08);border-radius:6px;border:1px solid rgba(90,158,143,0.2)">
+            <div style="font-size:11px;color:var(--muted);font-family:var(--font-mono)">GST INVOICE INCLUDED</div>
+            <div style="font-size:12px;color:var(--emerald);margin-top:4px">SAC Code · CGST 9% · SGST 9%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── SLIDE FINAL: CTA ─────────────────────────── -->
+  <section class="slide" id="slide-final">
+    <div style="margin-bottom:28px;"><img src="data:image/png;base64,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" style="height:44px;width:auto;display:inline-block;image-rendering:-webkit-optimize-contrast;" alt="CertKraft"></div>
+    <h2 class="final-headline">Ready to start your certification journey?</h2>
+    <p class="final-sub">CertKraft is built for the Indian learner — practical, affordable, and designed to get you certified faster with tools that actually work.</p>
+    <div class="final-actions">
+      <button class="btn-primary">Get Started Free</button>
+      <button class="btn-secondary">Explore Courses</button>
+    </div>
+    <div class="kira-strip">
+      <div class="kira-avatar">🧠</div>
+      <div class="kira-text"><strong>KIRA</strong> is ready to assess your starting point and build your study plan from day one.</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Progress dots -->
+<div id="nav-dots"></div>
+<div id="slide-counter">1 / 11</div>
+
+<script>
+  const deck = document.getElementById('deck');
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsWrap = document.getElementById('nav-dots');
+  const counter = document.getElementById('slide-counter');
+  const total = slides.length;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => scrollToSlide(i);
+    dotsWrap.appendChild(d);
+  });
+
+  function scrollToSlide(idx) {
+    deck.scrollTo({ left: idx * window.innerWidth, behavior: 'smooth' });
+  }
+
+  function updateDots(idx) {
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    counter.textContent = `${idx + 1} / ${total}`;
+  }
+
+  // Scroll observer
+  let scrollTimer;
+  deck.addEventListener('scroll', () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      const idx = Math.round(deck.scrollLeft / window.innerWidth);
+      updateDots(idx);
+    }, 50);
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    const idx = Math.round(deck.scrollLeft / window.innerWidth);
+    if (e.key === 'ArrowRight' && idx < total - 1) scrollToSlide(idx + 1);
+    if (e.key === 'ArrowLeft' && idx > 0) scrollToSlide(idx - 1);
+  });
+</script>
+
+<!-- ── Fixed logo top-left ── -->
+<div id="global-logo" style="
+  position: fixed;
+  top: 20px;
+  left: 36px;
+  z-index: 200;
+  pointer-events: none;
+">
+  <img src="data:image/png;base64,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"
+    style="height: 36px; width: auto; display: block; image-rendering: -webkit-optimize-contrast;"
+    alt="CertKraft">
+</div>
+
+</body>
+</html>
