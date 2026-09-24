@@ -1173,7 +1173,8 @@
   });
 
   function scrollToSlide(idx) {
-    deck.scrollTo({ left: idx * window.innerWidth, behavior: 'smooth' });
+    const target = slides[idx];
+    if (target) deck.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
   }
 
   function updateDots(idx) {
