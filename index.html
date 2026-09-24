@@ -1158,6 +1158,8 @@
     alt="CertKraft">
   <span id="slide-counter">1 / 11</span>
 </div>
+
+<script>
   const deck = document.getElementById('deck');
   const slides = Array.from(document.querySelectorAll('.slide'));
   const dotsWrap = document.getElementById('nav-dots');
@@ -1187,18 +1189,18 @@
   deck.addEventListener('scroll', () => {
     clearTimeout(scrollTimer);
     scrollTimer = setTimeout(() => {
-      const idx = Math.round(deck.scrollLeft / window.innerWidth);
+      const idx = Math.round(deck.scrollLeft / slides[0].offsetWidth);
       updateDots(idx);
     }, 50);
   });
 
   // Keyboard navigation
   document.addEventListener('keydown', e => {
-    const idx = Math.round(deck.scrollLeft / window.innerWidth);
+    const idx = Math.round(deck.scrollLeft / slides[0].offsetWidth);
     if (e.key === 'ArrowRight' && idx < total - 1) scrollToSlide(idx + 1);
     if (e.key === 'ArrowLeft' && idx > 0) scrollToSlide(idx - 1);
   });
 </script>
 
-<script>
+</body>
 </html>
